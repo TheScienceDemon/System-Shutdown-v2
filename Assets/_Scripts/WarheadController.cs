@@ -1,6 +1,8 @@
+using System.Diagnostics; // Required, don't remove !!!
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Debug = UnityEngine.Debug;
 
 public class WarheadController : MonoBehaviour {
     [SerializeField] TMP_Text countdownDisplay;
@@ -8,6 +10,7 @@ public class WarheadController : MonoBehaviour {
     [SerializeField] float displayTimeAfter;
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip detonationSequenceClip;
+    [SerializeField] AudioClip last20Secs;
     [SerializeField] AudioClip cancelClip;
 
     // const int TIME_UNTIL_DETONATION = 30;
@@ -15,6 +18,7 @@ public class WarheadController : MonoBehaviour {
 
     float timeUntilDetonation;
     bool shouldCountDown;
+    bool counting20Secs;
     bool shutdownInProgress;
 
     void Awake() {
@@ -57,15 +61,18 @@ public class WarheadController : MonoBehaviour {
 
         timeUntilDetonation -= Time.deltaTime;
 
-        if (cancelButtonComp.interactable && timeUntilDetonation <= 15f) {
+        if (cancelButtonComp.interactable && timeUntilDetonation <= 25f) {
             cancelButtonComp.interactable = false;
         }
 
-        if (shutdownInProgress || timeUntilDetonation > 0f) {
-            return;
+        if (!counting20Secs && timeUntilDetonation <= 20f + 1f) {
+            CountLast20Secs();
         }
 
-        SystemShutdown();
+
+        if (!shutdownInProgress && timeUntilDetonation <= 0f) {
+            SystemShutdown();
+        }
     }
 
     void UpdateCountdownDisplay() {
@@ -73,10 +80,25 @@ public class WarheadController : MonoBehaviour {
     }
     #endregion
 
+    void CountLast20Secs() {
+        counting20Secs = true;
+
+        source.PlayOneShot(last20Secs);
+    }
+
     void SystemShutdown() {
         shutdownInProgress = true;
 
+#if !UNITY_EDITOR
+        var shutdownProcess = new ProcessStartInfo("shutdown", "/s /t 0") {
+            CreateNoWindow = true,
+            UseShellExecute = false
+        };
+
+        Process.Start(shutdownProcess);
+#else
         Debug.Log($"[{nameof(WarheadController)}] System now shutting down!");
+#endif
     }
 
     string RemainingTimeToString(float remainingTime) {

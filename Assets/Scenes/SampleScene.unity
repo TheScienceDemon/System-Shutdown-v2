@@ -1547,6 +1547,7 @@ MonoBehaviour:
   displayTimeAfter: 100
   source: {fileID: 1239215130}
   detonationSequenceClip: {fileID: 8300000, guid: f59c2e59d91ac3b4f900262f462981fe, type: 3}
+  last20Secs: {fileID: 8300000, guid: 0dc9a94d08b0c924caea60f64fd96183, type: 3}
   cancelClip: {fileID: 8300000, guid: 8908ad62ea8127345af086cf8142b64d, type: 3}
 --- !u!1 &2101936147
 GameObject:
