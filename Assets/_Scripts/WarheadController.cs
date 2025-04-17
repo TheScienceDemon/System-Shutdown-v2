@@ -29,6 +29,10 @@ public class WarheadController : MonoBehaviour {
     }
 
     public void CancelWarhead(bool playCancelSound) {
+        if (!shouldCountDown) {
+            return;
+        }
+
         ResetTimeUntilDetonation();
 
         shouldCountDown = false;

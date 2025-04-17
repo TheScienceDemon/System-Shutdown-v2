@@ -618,7 +618,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &595739773
 MonoBehaviour:
@@ -1547,7 +1547,7 @@ MonoBehaviour:
   displayTimeAfter: 100
   source: {fileID: 1239215130}
   detonationSequenceClip: {fileID: 8300000, guid: f59c2e59d91ac3b4f900262f462981fe, type: 3}
-  cancelClip: {fileID: 0}
+  cancelClip: {fileID: 8300000, guid: 8908ad62ea8127345af086cf8142b64d, type: 3}
 --- !u!1 &2101936147
 GameObject:
   m_ObjectHideFlags: 0
