@@ -36,6 +36,7 @@ public class WarheadController : MonoBehaviour {
     }
 
     public void EngageWarhead() {
+        InterfaceManipulation.Singleton.HideEngageButton();
         isRunning = true;
 
         source.clip = detonationSequenceClip;
@@ -49,6 +50,7 @@ public class WarheadController : MonoBehaviour {
 
         ResetTimeUntilDetonation();
 
+        InterfaceManipulation.Singleton.ShowEngageButton();
         isRunning = false;
         source.Stop();
 

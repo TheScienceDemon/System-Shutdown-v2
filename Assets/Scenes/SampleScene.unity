@@ -318,8 +318,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1460,8 +1460,9 @@ GameObject:
   - component: {fileID: 1394813542}
   - component: {fileID: 1394813544}
   - component: {fileID: 1394813543}
-  - component: {fileID: 1394813545}
   - component: {fileID: 1394813546}
+  - component: {fileID: 1394813545}
+  - component: {fileID: 1394813547}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1562,6 +1563,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78c73e44b5a8a1443a705e4e8cf4aa03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1394813547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394813541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d1a36fed9af2ca419920f2cdc970f93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  countdownDisplay: {fileID: 405750658}
+  engageButton: {fileID: 140223205}
 --- !u!1 &2101936147
 GameObject:
   m_ObjectHideFlags: 0
