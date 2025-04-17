@@ -3,17 +3,40 @@ using TMPro;
 
 public class WarheadController : MonoBehaviour {
     [SerializeField] TMP_Text countdownDisplay;
+    [SerializeField] bool shouldCountDown;
 
     const int TIME_UNTIL_DETONATION = 120;
     const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
 
-    [SerializeField] float temp = TIME_UNTIL_DETONATION;
+    float timeUntilDetonation = TIME_UNTIL_DETONATION;
 
-    void Update() {
-        temp -= Time.deltaTime;
-
-        countdownDisplay.text = RemainingTimeToString(temp);
+    public void EngageWarhead() {
+        shouldCountDown = true;
     }
+
+    public void CancelWarhead() {
+        shouldCountDown = false;
+        timeUntilDetonation = TIME_UNTIL_DETONATION;
+    }
+
+    #region Update + related
+    void Update() {
+        CountDown();
+        UpdateCountdownDisplay();
+    }
+
+    void CountDown() {
+        if (!shouldCountDown) {
+            return;
+        }
+
+        timeUntilDetonation -= Time.deltaTime;
+    }
+
+    void UpdateCountdownDisplay() {
+        countdownDisplay.text = RemainingTimeToString(timeUntilDetonation);
+    }
+    #endregion
 
     string RemainingTimeToString(float remainingTime) {
         if (remainingTime <= 0f) {
