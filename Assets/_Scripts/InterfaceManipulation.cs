@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class InterfaceManipulation : MonoBehaviour {
     public static InterfaceManipulation Singleton { get; private set; }
 
+    [SerializeField] GameObject countdownText;
     [SerializeField] GameObject countdownDisplay;
     [SerializeField] GameObject engageButton;
 
@@ -32,8 +33,13 @@ public class InterfaceManipulation : MonoBehaviour {
             .DOFade(0f, FADE_DURATION);
 
         tween1.OnComplete(() => {
-            countdownDisplay.GetComponent<TMP_Text>()
+            var tween2 = countdownText.GetComponentInChildren<TMP_Text>()
                 .DOFade(1f, FADE_DURATION);
+
+            tween2.OnComplete(() => {
+                countdownDisplay.GetComponent<TMP_Text>()
+                    .DOFade(1f, FADE_DURATION);
+            });
         });
     }
 
@@ -44,11 +50,16 @@ public class InterfaceManipulation : MonoBehaviour {
             .DOFade(0f, FADE_DURATION);
 
         tween1.OnComplete(() => {
-            engageButton.GetComponent<Image>()
-                .DOFade(1f, FADE_DURATION);
+            var tween2 = countdownText.GetComponent<TMP_Text>()
+                .DOFade(0f, FADE_DURATION);
 
-            engageButton.GetComponentInChildren<TMP_Text>()
-                .DOFade(1f, FADE_DURATION);
+            tween2.OnComplete(() => {
+                engageButton.GetComponent<Image>()
+                    .DOFade(1f, FADE_DURATION);
+
+                engageButton.GetComponentInChildren<TMP_Text>()
+                    .DOFade(1f, FADE_DURATION);
+            });
         });
     }
 

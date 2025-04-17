@@ -115,8 +115,7 @@ public class WarheadController : MonoBehaviour {
     string RemainingTimeToString(float remainingTime) {
         if (remainingTime <= 0f) {
             return
-                $"00:00:000\n" +
-                $"{TIME_UNTIL_DETONATION_SUB}";
+                $"00:00:000";
         }
 
         if (remainingTime > displayTimeAfter) {
@@ -127,9 +126,7 @@ public class WarheadController : MonoBehaviour {
         var secs = Mathf.Floor(remainingTime % 60);
         var millisecs = Mathf.Floor(remainingTime * 1000 % 1000);
 
-        return
-            $"{mins:00}:{secs:00}:{millisecs:000}\n" +
-            $"{TIME_UNTIL_DETONATION_SUB}";
+        return $"{mins:00}:{secs:00}:{millisecs:000}";
     }
 
     void ResetTimeUntilDetonation() {
