@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class WarheadController : MonoBehaviour {
+    public static WarheadController Singleton { get; private set; }
+
     [SerializeField] TMP_Text countdownDisplay;
     [SerializeField] Button cancelButtonComp;
     [SerializeField] float displayTimeAfter;
@@ -17,29 +19,37 @@ public class WarheadController : MonoBehaviour {
     const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
 
     float timeUntilDetonation;
-    bool shouldCountDown;
+    bool isRunning;
     bool counting20Secs;
     bool shutdownInProgress;
 
+    #region Getter
+    public bool GetIsRunning() {
+        return isRunning;
+    }
+    #endregion
+
     void Awake() {
+        Singleton = this;
+
         ResetTimeUntilDetonation();
     }
 
     public void EngageWarhead() {
-        shouldCountDown = true;
+        isRunning = true;
 
         source.clip = detonationSequenceClip;
         source.Play();
     }
 
     public void CancelWarhead(bool playCancelSound) {
-        if (!shouldCountDown) {
+        if (!isRunning) {
             return;
         }
 
         ResetTimeUntilDetonation();
 
-        shouldCountDown = false;
+        isRunning = false;
         source.Stop();
 
         if (playCancelSound) {
@@ -55,7 +65,7 @@ public class WarheadController : MonoBehaviour {
     }
 
     void CountDown() {
-        if (!shouldCountDown) {
+        if (!isRunning) {
             return;
         }
 
@@ -68,7 +78,6 @@ public class WarheadController : MonoBehaviour {
         if (!counting20Secs && timeUntilDetonation <= 20f + 1f) {
             CountLast20Secs();
         }
-
 
         if (!shutdownInProgress && timeUntilDetonation <= 0f) {
             SystemShutdown();

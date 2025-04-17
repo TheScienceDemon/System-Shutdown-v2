@@ -543,7 +543,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &595739771
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1461,6 +1461,7 @@ GameObject:
   - component: {fileID: 1394813544}
   - component: {fileID: 1394813543}
   - component: {fileID: 1394813545}
+  - component: {fileID: 1394813546}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -1549,6 +1550,18 @@ MonoBehaviour:
   detonationSequenceClip: {fileID: 8300000, guid: f59c2e59d91ac3b4f900262f462981fe, type: 3}
   last20Secs: {fileID: 8300000, guid: 0dc9a94d08b0c924caea60f64fd96183, type: 3}
   cancelClip: {fileID: 8300000, guid: 8908ad62ea8127345af086cf8142b64d, type: 3}
+--- !u!114 &1394813546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394813541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78c73e44b5a8a1443a705e4e8cf4aa03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2101936147
 GameObject:
   m_ObjectHideFlags: 0
