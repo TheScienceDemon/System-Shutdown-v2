@@ -18,7 +18,7 @@ public class WarheadController : MonoBehaviour {
     // const int TIME_UNTIL_DETONATION = 30;
     const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
 
-    public float timeUntilDetonation;
+    float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;
     bool shutdownInProgress;
@@ -26,6 +26,10 @@ public class WarheadController : MonoBehaviour {
     #region Getter
     public bool GetIsRunning() {
         return isRunning;
+    }
+
+    public float GetTimeUntilDetonation() {
+        return timeUntilDetonation;
     }
     #endregion
 
