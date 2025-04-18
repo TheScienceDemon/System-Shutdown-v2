@@ -27,6 +27,10 @@ public class WarheadController : MonoBehaviour {
     public bool GetIsRunning() {
         return isRunning;
     }
+
+    public float GetTimeUntilDetonation() {
+        return timeUntilDetonation;
+    }
     #endregion
 
     void Awake() {
@@ -38,6 +42,7 @@ public class WarheadController : MonoBehaviour {
     public void EngageWarhead() {
         InterfaceManipulation.Singleton.HideEngageButton();
         isRunning = true;
+        counting20Secs = false;
 
         source.clip = detonationSequenceClip;
         source.Play();
