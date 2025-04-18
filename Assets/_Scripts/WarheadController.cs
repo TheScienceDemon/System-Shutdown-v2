@@ -15,7 +15,7 @@ public class WarheadController : MonoBehaviour {
     [SerializeField] AudioClip last20Secs;
     [SerializeField] AudioClip cancelClip;
 
-    float timeUntilDetonation;
+    public float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;
     bool shutdownInProgress;
