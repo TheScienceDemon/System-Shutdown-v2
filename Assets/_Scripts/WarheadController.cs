@@ -1,4 +1,4 @@
-using System.Diagnostics; // Required, don't remove !!!
+using System.Diagnostics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,14 +8,13 @@ public class WarheadController : MonoBehaviour {
     public static WarheadController Singleton { get; private set; }
 
     [SerializeField] TMP_Text countdownDisplay;
-    [SerializeField] Button cancelButtonComp;
     [SerializeField] float displayTimeAfter;
     [SerializeField] AudioSource source;
     [SerializeField] AudioClip detonationSequenceClip;
     [SerializeField] AudioClip last20Secs;
     [SerializeField] AudioClip cancelClip;
 
-    public float timeUntilDetonation;
+    float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;
     bool shutdownInProgress;
@@ -23,6 +22,10 @@ public class WarheadController : MonoBehaviour {
     #region Getter
     public bool GetIsRunning() {
         return isRunning;
+    }
+
+    public float GetTimeUntilDetonation() {
+        return timeUntilDetonation;
     }
     #endregion
 
@@ -46,7 +49,7 @@ public class WarheadController : MonoBehaviour {
             return;
         }
 
-        ResetTimeUntilDetonation();
+        Invoke(nameof(ResetTimeUntilDetonation), 1f);
 
         InterfaceManipulation.Singleton.ShowEngageButton();
         isRunning = false;
@@ -70,10 +73,6 @@ public class WarheadController : MonoBehaviour {
         }
 
         timeUntilDetonation -= Time.deltaTime;
-
-        if (cancelButtonComp.interactable && timeUntilDetonation <= 25f) {
-            cancelButtonComp.interactable = false;
-        }
 
         if (!counting20Secs && timeUntilDetonation <= 20f + 1f) {
             CountLast20Secs();

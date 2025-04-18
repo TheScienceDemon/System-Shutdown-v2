@@ -26,7 +26,7 @@ public class InterfaceManipulation : MonoBehaviour {
         .OnComplete(() => {
             DOVirtual.DelayedCall(4f, () => {
                 countdownText.GetComponentInChildren<TMP_Text>()
-                    .DOFade(1f, 4f)
+                    .DOFade(1f, 4.5f)
 
                 .OnComplete(() => {
                     countdownDisplay.GetComponent<TMP_Text>()
