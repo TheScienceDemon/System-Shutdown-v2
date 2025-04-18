@@ -38,6 +38,7 @@ public class WarheadController : MonoBehaviour {
     public void EngageWarhead() {
         InterfaceManipulation.Singleton.HideEngageButton();
         isRunning = true;
+        counting20Secs = false;
 
         source.clip = detonationSequenceClip;
         source.Play();
