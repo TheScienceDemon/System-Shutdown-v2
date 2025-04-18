@@ -15,9 +15,6 @@ public class WarheadController : MonoBehaviour {
     [SerializeField] AudioClip last20Secs;
     [SerializeField] AudioClip cancelClip;
 
-    // const int TIME_UNTIL_DETONATION = 30;
-    const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
-
     float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;

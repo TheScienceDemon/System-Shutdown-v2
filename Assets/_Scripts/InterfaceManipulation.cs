@@ -10,15 +10,6 @@ public class InterfaceManipulation : MonoBehaviour {
     [SerializeField] GameObject countdownDisplay;
     [SerializeField] GameObject engageButton;
 
-    /* // :tr: ///////////////////////////////////////////////////////
-    List<DG.Tweening.Core.TweenerCore<Color, Color,
-        DG.Tweening.Plugins.Options.ColorOptions>> currentTweens =
-        new List<DG.Tweening.Core.TweenerCore<Color, Color,
-            DG.Tweening.Plugins.Options.ColorOptions>>();
-    */ ///////////////////////////////////////////////////////////////
-
-    const float FADE_DURATION = 4f;
-
     void Awake() {
         Singleton = this;
     }
@@ -26,39 +17,41 @@ public class InterfaceManipulation : MonoBehaviour {
     public void HideEngageButton() {
         KillCurrentTweens();
 
-        var tween1 = engageButton.GetComponent<Image>()
-            .DOFade(0f, FADE_DURATION);
+        engageButton.GetComponent<Image>()
+            .DOFade(0f, 3f);
 
         engageButton.GetComponentInChildren<TMP_Text>()
-            .DOFade(0f, FADE_DURATION);
+            .DOFade(0f, 3f)
 
-        tween1.OnComplete(() => {
-            var tween2 = countdownText.GetComponentInChildren<TMP_Text>()
-                .DOFade(1f, FADE_DURATION);
+        .OnComplete(() => {
+            DOVirtual.DelayedCall(4f, () => {
+                countdownText.GetComponentInChildren<TMP_Text>()
+                    .DOFade(1f, 4f)
 
-            tween2.OnComplete(() => {
-                countdownDisplay.GetComponent<TMP_Text>()
-                    .DOFade(1f, FADE_DURATION);
+                .OnComplete(() => {
+                    countdownDisplay.GetComponent<TMP_Text>()
+                        .DOFade(1f, 1f);
+                });
             });
-        });
+        });    
     }
 
     public void ShowEngageButton() {
         KillCurrentTweens();
 
-        var tween1 = countdownDisplay.GetComponent<TMP_Text>()
-            .DOFade(0f, FADE_DURATION);
+        countdownDisplay.GetComponent<TMP_Text>()
+            .DOFade(0f, 1f);
 
-        tween1.OnComplete(() => {
-            var tween2 = countdownText.GetComponent<TMP_Text>()
-                .DOFade(0f, FADE_DURATION);
-
-            tween2.OnComplete(() => {
+        countdownText.GetComponent<TMP_Text>()
+            .DOFade(0f, 1f)
+        
+        .OnComplete(() => {
+            DOVirtual.DelayedCall(2.5f, () => {
                 engageButton.GetComponent<Image>()
-                    .DOFade(1f, FADE_DURATION);
+                    .DOFade(1f, 1f);
 
                 engageButton.GetComponentInChildren<TMP_Text>()
-                    .DOFade(1f, FADE_DURATION);
+                    .DOFade(1f, 1f);
             });
         });
     }
