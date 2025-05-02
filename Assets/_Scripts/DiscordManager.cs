@@ -3,7 +3,7 @@ using UnityEngine;
 public class DiscordManager : MonoBehaviour {
     public static DiscordManager Singleton { get; private set; }
 
-    const long GAME_ID = 933014456802344961;
+    const long GAME_ID = 1361108781445943476;
 
     Discord.Discord discord;
     long time;

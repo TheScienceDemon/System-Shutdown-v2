@@ -39,7 +39,7 @@ public class WarheadController : MonoBehaviour {
 
     void Start() {
         ResetTimeUntilDetonation();
-        InvokeRepeating(nameof(UpdateDiscordActivity), 0f, 4f);
+        InvokeRepeating(nameof(UpdateDiscordActivity), 0f, 5f);
     }
 
     public void EngageWarhead() {
