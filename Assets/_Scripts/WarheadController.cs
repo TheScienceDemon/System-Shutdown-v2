@@ -35,8 +35,11 @@ public class WarheadController : MonoBehaviour {
 
     void Awake() {
         Singleton = this;
+    }
 
+    void Start() {
         ResetTimeUntilDetonation();
+        InvokeRepeating(nameof(UpdateDiscordActivity), 0f, 4f);
     }
 
     public void EngageWarhead() {
@@ -54,6 +57,7 @@ public class WarheadController : MonoBehaviour {
         }
 
         ResetTimeUntilDetonation();
+        DiscordManager.Singleton.SetStartupActivity();
 
         InterfaceManipulation.Singleton.ShowEngageButton();
         isRunning = false;
@@ -71,10 +75,14 @@ public class WarheadController : MonoBehaviour {
         UpdateCountdownDisplay();
     }
 
+    void UpdateDiscordActivity() {
+        if (!isRunning) { return; }
+
+        DiscordManager.Singleton.SetDetonationActivity();
+    }
+
     void CountDown() {
-        if (!isRunning) {
-            return;
-        }
+        if (!isRunning) { return; }
 
         timeUntilDetonation -= Time.deltaTime;
 
