@@ -17,11 +17,14 @@ public class WarheadController : MonoBehaviour {
 
     // const int TIME_UNTIL_DETONATION = 30;
     const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
+    const string SHUTDOWN_COMMAND = "/s /t 0";
+    const string RESTART_COMMAND = "/r /t 0"; // Still need to figure out
 
     float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;
     bool shutdownInProgress;
+    bool shouldRestartInstead;
 
     #region Getter
     public bool GetIsRunning() {
@@ -40,6 +43,10 @@ public class WarheadController : MonoBehaviour {
     void Start() {
         ResetTimeUntilDetonation();
         InvokeRepeating(nameof(UpdateDiscordActivity), 0f, 5f);
+    }
+
+    public void ChangeWarheadMode(int warheadMode) {
+        shouldRestartInstead = (WarheadModes) warheadMode != WarheadModes.Shutdown;
     }
 
     public void EngageWarhead() {
@@ -114,7 +121,12 @@ public class WarheadController : MonoBehaviour {
         shutdownInProgress = true;
 
 #if !UNITY_EDITOR
-        var shutdownProcess = new ProcessStartInfo("shutdown", "/s /t 0") {
+        var shutdownProcess = new ProcessStartInfo(
+            "shutdown",
+            !shouldRestartInstead
+                ? SHUTDOWN_COMMAND
+                : RESTART_COMMAND) {
+            
             CreateNoWindow = true,
             UseShellExecute = false
         };
@@ -127,8 +139,7 @@ public class WarheadController : MonoBehaviour {
 
     string RemainingTimeToString(float remainingTime) {
         if (remainingTime <= 0f) {
-            return
-                $"00:00:000";
+            return $"00:00:000";
         }
 
         if (remainingTime > displayTimeAfter) {
@@ -144,5 +155,10 @@ public class WarheadController : MonoBehaviour {
 
     void ResetTimeUntilDetonation() {
         timeUntilDetonation = detonationSequenceClip.length;
+    }
+
+    enum WarheadModes {
+        Shutdown,
+        Restart
     }
 }
