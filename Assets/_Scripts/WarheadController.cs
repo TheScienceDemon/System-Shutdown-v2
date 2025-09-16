@@ -1,5 +1,4 @@
 using System.Diagnostics; // Required, don't remove !!!
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -7,7 +6,6 @@ using Debug = UnityEngine.Debug;
 public class WarheadController : MonoBehaviour {
     public static WarheadController Singleton { get; private set; }
 
-    [SerializeField] TMP_Text countdownDisplay;
     [SerializeField] Button cancelButtonComp;
     [SerializeField] float displayTimeAfter;
     [SerializeField] AudioSource source;
@@ -107,7 +105,10 @@ public class WarheadController : MonoBehaviour {
     }
 
     void UpdateCountdownDisplay() {
-        countdownDisplay.text = RemainingTimeToString(timeUntilDetonation);
+        var remainingTime = RemainingTimeToString(timeUntilDetonation);
+
+        InterfaceManipulation.Singleton.CountdownText.text = remainingTime;
+        InterfaceManipulation.Singleton.CountdownText2.text = remainingTime;
     }
     #endregion
 
