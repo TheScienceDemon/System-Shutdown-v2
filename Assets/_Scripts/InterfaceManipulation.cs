@@ -7,13 +7,18 @@ public class InterfaceManipulation : MonoBehaviour {
     public static InterfaceManipulation Singleton { get; private set; }
 
     [Header("Main Display")]
+    [SerializeField] TMP_Text infoText;
     [SerializeField] GameObject countdownText;
     [SerializeField] GameObject countdownDisplay;
     [SerializeField] GameObject engageButton;
 
     [Header("Second Display")]
+    [SerializeField] TMP_Text infoText2;
     [SerializeField] GameObject countdownText2;
     [SerializeField] GameObject countdownDisplay2;
+
+    const float FADE_DURATION = 4f;
+    const string WARHEAD_OS_VERSION_TEMPLATE = "Running WarheadOS v[version]";
 
     /* // :tr: ///////////////////////////////////////////////////////
     List<DG.Tweening.Core.TweenerCore<Color, Color,
@@ -30,8 +35,6 @@ public class InterfaceManipulation : MonoBehaviour {
         get => countdownDisplay2.GetComponent<TMP_Text>();
     }
 
-    const float FADE_DURATION = 4f;
-
     bool UseSecondDisplay {
         get => Display.displays.Length > 1;
     }
@@ -41,6 +44,11 @@ public class InterfaceManipulation : MonoBehaviour {
     }
 
     void Start() {
+        infoText.text = infoText2.text =
+            WARHEAD_OS_VERSION_TEMPLATE.Replace(
+                "[version]",
+                WarheadController.WARHEAD_OS_VERSION);
+
         if (!UseSecondDisplay) { return; }
 
         Display.displays[1].Activate();

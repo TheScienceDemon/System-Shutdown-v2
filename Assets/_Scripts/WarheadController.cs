@@ -18,6 +18,8 @@ public class WarheadController : MonoBehaviour {
     const string SHUTDOWN_COMMAND = "/s /t 0";
     const string RESTART_COMMAND = "/r /t 0"; // Still need to figure out
 
+    public const string WARHEAD_OS_VERSION = "2.2.0";
+
     float timeUntilDetonation;
     bool isRunning;
     bool counting20Secs;
