@@ -19,7 +19,7 @@ public class WarheadController : MonoBehaviour {
     const string RESTART_COMMAND = "/r /t 0"; // Still need to figure out
                                               // pretty sure I've figured it out by now :tr:
 
-    public const string WARHEAD_OS_VERSION = "2.2.0";
+    public const string WARHEAD_OS_VERSION = "2.2.1";
 
     float timeUntilDetonation;
     bool isRunning;
