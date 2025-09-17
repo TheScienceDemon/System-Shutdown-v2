@@ -2,20 +2,65 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class InterfaceManipulation : MonoBehaviour {
     public static InterfaceManipulation Singleton { get; private set; }
 
     [Header("Main Display")]
     [SerializeField] TMP_Text infoText;
-    [SerializeField] GameObject countdownText;
-    [SerializeField] GameObject countdownDisplay;
+    [SerializeField] TMP_Text countdownText;
+    [SerializeField] TMP_Text countdownDisplay;
     [SerializeField] GameObject engageButton;
 
-    [Header("Second Display")]
-    [SerializeField] TMP_Text infoText2;
-    [SerializeField] GameObject countdownText2;
-    [SerializeField] GameObject countdownDisplay2;
+    [Header("Second Display/s")]
+    [SerializeField] GameObject displayInstancePrefab;
+    [SerializeField] Transform displayInstanceHolder;
+
+    [SerializeField] List<DisplayInstance> otherDisplays;
+
+    [SerializeField, System.Obsolete] TMP_Text infoText2;
+    [SerializeField, System.Obsolete] GameObject countdownText2;
+    [SerializeField, System.Obsolete] GameObject countdownDisplay2;
+
+    TMP_Text[] InfoTexts {
+        get {
+            var texts = new TMP_Text[otherDisplays.Count + 1];
+            texts[0] = infoText;
+
+            for (int i = 0; i < otherDisplays.Count; i++) {
+                texts[i + 1] = otherDisplays[i].Infobox;
+            }
+
+            return texts;
+        }
+    }
+
+    TMP_Text[] CountdownTexts {
+        get {
+            var texts = new TMP_Text[otherDisplays.Count + 1];
+            texts[0] = countdownText;
+
+            for (int i = 0; i < otherDisplays.Count; i++) {
+                texts[i + 1] = otherDisplays[i].CountdownText;
+            }
+
+            return texts;
+        }
+    }
+
+    public TMP_Text[] CountdownDisplays {
+        get {
+            var displays = new TMP_Text[otherDisplays.Count + 1];
+            displays[0] = countdownDisplay;
+
+            for (int i = 0; i < otherDisplays.Count; i++) {
+                displays[i + 1] = otherDisplays[i].CountdownDisplay;
+            }
+
+            return displays;
+        }
+    }
 
     const float FADE_DURATION = 4f;
     const string WARHEAD_OS_VERSION_TEMPLATE = "Running WarheadOS v[version]";
@@ -27,32 +72,46 @@ public class InterfaceManipulation : MonoBehaviour {
             DG.Tweening.Plugins.Options.ColorOptions>>();
     */ ///////////////////////////////////////////////////////////////
 
+    [System.Obsolete]
     public TMP_Text CountdownText {
         get => countdownDisplay.GetComponent<TMP_Text>();
     }
 
-    public TMP_Text CountdownText2 {
-        get => countdownDisplay2.GetComponent<TMP_Text>();
+    int DisplaysInUse {
+        get {
+#if UNITY_EDITOR
+            return 2;
+#else
+            return Display.displays.Length > 1;
+#endif
+        }
     }
 
-    bool UseSecondDisplay {
-        get => Display.displays.Length > 1;
-    }
-
+    #region Unity Messages
     void Awake() {
         Singleton = this;
     }
 
     void Start() {
-        infoText.text = infoText2.text =
-            WARHEAD_OS_VERSION_TEMPLATE.Replace(
-                "[version]",
-                WarheadController.WARHEAD_OS_VERSION);
+        for (int i = 1; i < DisplaysInUse; i++) {
+            var newDisplay = Instantiate(displayInstancePrefab, displayInstanceHolder);
+            newDisplay.name = $"Display Instance - {i + 1}";
 
-        if (!UseSecondDisplay) { return; }
+            var script = newDisplay.GetComponent<DisplayInstance>();
 
-        Display.displays[1].Activate();
+            otherDisplays.Add(script);
+
+            script.SetupInstance(i);
+        }
+
+        foreach (var text in InfoTexts) {
+            text.text =
+                WARHEAD_OS_VERSION_TEMPLATE.Replace(
+                    "[version]",
+                    WarheadController.WARHEAD_OS_VERSION);
+        }
     }
+    #endregion
 
     public void HideEngageButton() {
         KillCurrentTweens();
@@ -64,18 +123,23 @@ public class InterfaceManipulation : MonoBehaviour {
             .DOFade(0f, FADE_DURATION);
 
         tween1.OnComplete(() => {
-            var tween2 = countdownText.GetComponentInChildren<TMP_Text>()
-                .DOFade(1f, FADE_DURATION);
+            // kms
+            DG.Tweening.Core.TweenerCore
+                <Color, Color, DG.Tweening.Plugins.Options.ColorOptions>
+                    tween2 = null;
 
-            countdownText2.GetComponentInChildren<TMP_Text>()
-                .DOFade(1f, FADE_DURATION);
+            for (int i = 0; i < CountdownTexts.Length; i++) {
+                if (i == 0) {
+                    tween2 = CountdownTexts[i].DOFade(1f, FADE_DURATION);
+                } else {
+                    CountdownTexts[i].DOFade(1f, FADE_DURATION);
+                }
+            }
 
             tween2.OnComplete(() => {
-                countdownDisplay.GetComponent<TMP_Text>()
-                    .DOFade(1f, FADE_DURATION);
-
-                countdownDisplay2.GetComponent<TMP_Text>()
-                    .DOFade(1f, FADE_DURATION);
+                foreach (var countdownDisplay in CountdownDisplays) {
+                    countdownDisplay.DOFade(1f, FADE_DURATION);
+                }
             });
         });
     }
@@ -83,18 +147,32 @@ public class InterfaceManipulation : MonoBehaviour {
     public void ShowEngageButton() {
         KillCurrentTweens();
 
-        var tween1 = countdownDisplay.GetComponent<TMP_Text>()
-            .DOFade(0f, FADE_DURATION);
+        // kms^2
+        DG.Tweening.Core.TweenerCore
+            <Color, Color, DG.Tweening.Plugins.Options.ColorOptions>
+                tween1 = null;
 
-        countdownDisplay2.GetComponent<TMP_Text>()
-            .DOFade(0f, FADE_DURATION);
+        for (int i = 0; i < CountdownDisplays.Length; i++) {
+            if (i == 0) {
+                tween1 = CountdownDisplays[i].DOFade(0f, FADE_DURATION);
+            } else {
+                CountdownDisplays[i].DOFade(0f, FADE_DURATION);
+            }
+        }
 
         tween1.OnComplete(() => {
-            var tween2 = countdownText.GetComponent<TMP_Text>()
-                .DOFade(0f, FADE_DURATION);
+            // kms^3
+            DG.Tweening.Core.TweenerCore
+                <Color, Color, DG.Tweening.Plugins.Options.ColorOptions>
+                    tween2 = null;
 
-            countdownText2.GetComponent<TMP_Text>()
-                .DOFade(0f, FADE_DURATION);
+            for (int i = 0; i < CountdownTexts.Length; i++) {
+                if (i == 0) {
+                    tween2 = CountdownTexts[i].DOFade(0f, FADE_DURATION);
+                } else {
+                    CountdownTexts[i].DOFade(0f, FADE_DURATION);
+                }
+            }
 
             tween2.OnComplete(() => {
                 engageButton.GetComponent<Image>()

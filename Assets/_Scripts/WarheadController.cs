@@ -17,6 +17,7 @@ public class WarheadController : MonoBehaviour {
     const string TIME_UNTIL_DETONATION_SUB = "[Zeit zur Detonation]";
     const string SHUTDOWN_COMMAND = "/s /t 0";
     const string RESTART_COMMAND = "/r /t 0"; // Still need to figure out
+                                              // pretty sure I've figured it out by now :tr:
 
     public const string WARHEAD_OS_VERSION = "2.2.0";
 
@@ -109,8 +110,9 @@ public class WarheadController : MonoBehaviour {
     void UpdateCountdownDisplay() {
         var remainingTime = RemainingTimeToString(timeUntilDetonation);
 
-        InterfaceManipulation.Singleton.CountdownText.text = remainingTime;
-        InterfaceManipulation.Singleton.CountdownText2.text = remainingTime;
+        foreach (var displaysText in InterfaceManipulation.Singleton.CountdownDisplays) {
+            displaysText.text = remainingTime;
+        }
     }
     #endregion
 
