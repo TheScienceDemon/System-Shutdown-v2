@@ -82,7 +82,7 @@ public class InterfaceManipulation : MonoBehaviour {
 #if UNITY_EDITOR
             return 2;
 #else
-            return Display.displays.Length > 1;
+            return Display.displays.Length;
 #endif
         }
     }
